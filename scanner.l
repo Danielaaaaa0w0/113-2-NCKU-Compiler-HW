@@ -36,10 +36,11 @@ fnum {digit}+\.{digit}+
 %%
 \n                  { line_num++; print_token("NEWLINE"); }
 
-"/*"                { BEGIN(CMT_CON); add_comment(); yymore(); }
-<CMT_CON>\r?\n      { line_num++; add_comment(); yymore(); }
-<CMT_CON>(.)        { yymore(); }
+"/*"                { BEGIN(CMT_CON); add_comment(); printf("%s", yytext); }
+<CMT_CON>\r?\n      { line_num++; add_comment(); printf("%s", yytext); }
+<CMT_CON>(.)        { printf("%s", yytext); }
 <CMT_CON>"*/"       { BEGIN(INITIAL); print_token("MUTI_LINE_COMMENT");}
+
 
 "//"[^\r\n]*        { print_token("COMMENT"); add_comment(); }
 
